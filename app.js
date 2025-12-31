@@ -7,10 +7,22 @@ const { burstLimiter, apiLimiter } = require('./config/rate-limit');
 const app = express();
 
 // CORS Middleware
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://beyondchatsfrontend-git-main-anujs-projects-376ac7ae.vercel.app',
+  'https://beyondchatsfrontend.vercel.app',
+];
+
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
