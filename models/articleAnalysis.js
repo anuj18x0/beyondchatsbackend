@@ -61,6 +61,9 @@ const articleAnalysisSchema = new mongoose.Schema({
 // Index for faster queries
 articleAnalysisSchema.index({ 'originalArticle.id': 1 });
 articleAnalysisSchema.index({ createdAt: -1 });
+// Compound index for optimal $lookup performance in aggregation pipeline
+// Used when joining articles with their latest analysis sorted by date
+articleAnalysisSchema.index({ 'originalArticle.id': 1, createdAt: -1 });
 
 const ArticleAnalysis = mongoose.model('ArticleAnalysis', articleAnalysisSchema);
 
